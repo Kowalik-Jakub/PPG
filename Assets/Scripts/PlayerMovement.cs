@@ -1,9 +1,12 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float walkSpeed = 5f;
+    public float sprintSpeed = 8f;
+    public float currentSpeed = 5f;
+
     public float jumpForce = 5f;
     public float crouchScale = 0.5f;
     private float originalHeight;
@@ -16,23 +19,43 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         originalHeight = transform.localScale.y;
+        currentSpeed = walkSpeed;
     }
 
     void Update()
     {
         Move();
-        if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded)
+
+        if (Input.GetKeyDown(KeyCode.RightControl) && isGrounded)
             Jump();
+
         if (Input.GetKeyDown(KeyCode.LeftControl))
             Crouch();
+
+        if (Input.GetKey(KeyCode.LeftShift) && isGrounded)
+            currentSpeed = sprintSpeed;
+        else
+            currentSpeed = walkSpeed;
+    }
+
+    public void SetAimSpeed(float speed)
+    {
+        walkSpeed = speed;
+    }
+
+    public void ResetWalkSpeed(float speed)
+    {
+        walkSpeed = speed;
     }
 
     void Move()
     {
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
+
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
-        Vector3 newVel = new Vector3(move.x * moveSpeed, rb.linearVelocity.y, move.z * moveSpeed);
+        Vector3 newVel = new Vector3(move.x * currentSpeed, rb.linearVelocity.y, move.z * currentSpeed);
+
         rb.linearVelocity = newVel;
     }
 
@@ -45,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
     void Crouch()
     {
         isCrouching = !isCrouching;
+
         float newY = isCrouching ? originalHeight * crouchScale : originalHeight;
         transform.localScale = new Vector3(transform.localScale.x, newY, transform.localScale.z);
     }

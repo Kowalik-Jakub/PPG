@@ -7,11 +7,12 @@ TagManager:
   - Ground
   - Target
   - Bullet
+  - Interactable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Interactable
   - Water
   - UI
   - 
