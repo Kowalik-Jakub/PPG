@@ -4,9 +4,16 @@ public class PlayerShoot : MonoBehaviour
 {
     public Transform firePoint;
     public GameObject bulletPrefab;
-    public PlayerAim aimScript;
     public GameObject bulletPrefab2;
+    public PlayerAim aimScript;
+
+    private PlayerStats stats;
     private bool useSecondBullet = false;
+
+    void Start()
+    {
+        stats = GetComponent<PlayerStats>();
+    }
 
     void Update()
     {
@@ -15,7 +22,14 @@ public class PlayerShoot : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && aimScript.IsAiming())
         {
-            Shoot();
+            if (stats.TryConsumeAmmo(1))
+            {
+                Shoot();
+            }
+            else
+            {
+                Debug.Log("Brak amunicji!");
+            }
         }
     }
 

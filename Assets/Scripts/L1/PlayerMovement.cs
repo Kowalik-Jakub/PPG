@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 5f;
     public float crouchScale = 0.5f;
     private float originalHeight;
+    private PlayerStats stats;
 
     private Rigidbody rb;
     private bool isGrounded = true;
@@ -20,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         originalHeight = transform.localScale.y;
         currentSpeed = walkSpeed;
+        stats = GetComponent<PlayerStats>();
     }
 
     void Update()
@@ -33,9 +35,21 @@ public class PlayerMovement : MonoBehaviour
             Crouch();
 
         if (Input.GetKey(KeyCode.LeftShift) && isGrounded)
-            currentSpeed = sprintSpeed;
+        {
+            if (stats.TryConsumeStamina(Time.deltaTime * (stats.staminaSprintDrain * 1.8f)))
+            {
+                float staminaPercent = stats.stamina / stats.maxStamina;
+                currentSpeed = Mathf.Lerp(walkSpeed, sprintSpeed, staminaPercent);
+            }
+            else
+            {
+                currentSpeed = walkSpeed;
+            }
+        }
         else
+        {
             currentSpeed = walkSpeed;
+        }
     }
 
     public void SetAimSpeed(float speed)
@@ -54,7 +68,12 @@ public class PlayerMovement : MonoBehaviour
         float moveZ = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
-        Vector3 newVel = new Vector3(move.x * currentSpeed, rb.linearVelocity.y, move.z * currentSpeed);
+
+        Vector3 newVel = new Vector3(
+            move.x * currentSpeed,
+            rb.linearVelocity.y,
+            move.z * currentSpeed
+        );
 
         rb.linearVelocity = newVel;
     }

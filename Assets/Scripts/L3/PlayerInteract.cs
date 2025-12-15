@@ -3,10 +3,10 @@ using UnityEngine;
 public class PlayerInteract : MonoBehaviour
 {
     public Camera cam;
-    public float interactDistance = 3f;
+    public float interactDistance = 2f;
     public KeyCode interactKey = KeyCode.E;
 
-    public Interactable currentObject; // obiekt, na który patrzymy
+    public Interactable currentObject; 
 
     void Update()
     {

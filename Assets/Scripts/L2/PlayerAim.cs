@@ -21,7 +21,6 @@ public class PlayerAim : MonoBehaviour
         if (gun != null)
             gun.gameObject.SetActive(false);
 
-        // ustawiamy podstawow¹ prêdkoœæ chodzenia
         movement.walkSpeed = normalMoveSpeed;
     }
 
@@ -34,7 +33,6 @@ public class PlayerAim : MonoBehaviour
             if (gun != null)
                 gun.gameObject.SetActive(true);
 
-            // spowolnienie chodzenia przy celowaniu
             movement.SetAimSpeed(aimMoveSpeed);
         }
         else if (Input.GetMouseButtonUp(1))
@@ -44,11 +42,9 @@ public class PlayerAim : MonoBehaviour
             if (gun != null)
                 gun.gameObject.SetActive(false);
 
-            // powrót do normalnej prêdkoœci chodzenia
             movement.ResetWalkSpeed(normalMoveSpeed);
         }
 
-        // p³ynna zmiana FOV
         float targetFOV = isAiming ? aimFOV : normalFOV;
         playerCamera.fieldOfView =
             Mathf.Lerp(playerCamera.fieldOfView, targetFOV, Time.deltaTime * aimSpeed);
