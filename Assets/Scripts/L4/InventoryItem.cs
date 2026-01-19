@@ -7,6 +7,8 @@ public class InventoryItem
     public Sprite icon;
     public int value;
     public ItemType type;
+    public int price;
+
 }
 
 public enum ItemType

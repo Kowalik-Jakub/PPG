@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
+    public GameOverUI gameOverUI;
+    public int money = 100;
+
     public int maxHealth = 100;
     public int health = 100;
 
@@ -54,5 +57,17 @@ public class PlayerStats : MonoBehaviour
     {
         health -= amount;
         health = Mathf.Clamp(health, 0, maxHealth);
+    }
+
+    public bool SpendMoney(int amount)
+    {
+        if (money < amount) return false;
+        money -= amount;
+        return true;
+    }
+
+    public void AddMoney(int amount)
+    {
+        money += amount;
     }
 }

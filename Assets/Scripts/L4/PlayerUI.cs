@@ -9,6 +9,8 @@ public class PlayerUI : MonoBehaviour
     public Slider hpBar;
     public Slider staminaBar;
     public TextMeshProUGUI ammoText;
+    public TextMeshProUGUI moneyText;
+
 
     void Start()
     {
@@ -21,5 +23,6 @@ public class PlayerUI : MonoBehaviour
         hpBar.value = stats.health;
         staminaBar.value = stats.stamina;
         ammoText.text = stats.ammo + " / " + stats.maxAmmo;
+        moneyText.text = "$ " + stats.money;
     }
 }
